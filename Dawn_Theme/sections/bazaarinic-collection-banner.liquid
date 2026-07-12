@@ -1,0 +1,47 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-collection-banner {
+    text-align: center;
+    padding: 60px 5%;
+    background-color: var(--bz-color-card);
+    border-bottom: 1px solid var(--bz-color-border);
+  }
+  .bz-collection-banner__title {
+    margin: 0 0 16px;
+  }
+  .bz-collection-banner__desc {
+    max-width: 600px;
+    margin: 0 auto;
+    color: #a3a3a3;
+  }
+</style>
+
+<div class="bz-collection-banner">
+  <h1 class="bz-heading bz-heading-lg bz-collection-banner__title">
+    <span class="visually-hidden">Collection: </span>
+    {{ collection.title | escape }}
+  </h1>
+
+  {%- if section.settings.show_collection_description and collection.description != blank -%}
+    <div class="bz-collection-banner__desc bz-text">
+      {{ collection.description }}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Coll Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show collection description"
+    }
+  ]
+}
+{% endschema %}

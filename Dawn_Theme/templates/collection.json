@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "banner": {
+      "type": "bazaarinic-collection-banner",
+      "settings": {
+        "show_collection_description": true
+      }
+    },
+    "product-grid": {
+      "type": "bazaarinic-collection-grid",
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "show_vendor": true
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid"
+  ]
+}

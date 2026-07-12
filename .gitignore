@@ -1,0 +1,4 @@
+# Local Shopify development files
+.shopify/
+.config/shopify.theme.preview.json
+*.log

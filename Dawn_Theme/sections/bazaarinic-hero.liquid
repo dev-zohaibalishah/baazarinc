@@ -1,0 +1,202 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-hero-{{ section.id }} {
+    position: relative;
+    min-height: {{ section.settings.desktop_height }};
+    display: flex;
+    align-items: center;
+    justify-content: {{ section.settings.text_alignment }};
+    overflow: hidden;
+  }
+  @media (max-width: 768px) {
+    .bz-hero-{{ section.id }} {
+      min-height: {{ section.settings.mobile_height }};
+    }
+  }
+  .bz-hero__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .bz-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .bz-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(10,10,10,0.8));
+    z-index: 2;
+  }
+  .bz-hero__content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    padding: 40px;
+    text-align: {{ section.settings.text_alignment }};
+  }
+  .bz-hero__content .bz-text {
+    margin-bottom: 32px;
+    font-size: 1.125rem;
+    color: #e5e5e5;
+  }
+</style>
+
+<div class="bz-hero-{{ section.id }} bz-section">
+  <div class="bz-hero__bg">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw' }}
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+  <div class="bz-hero__overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}"></div>
+  
+  <div class="bz-hero__content bz-glass">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'heading' -%}
+          <h1 class="bz-heading bz-heading-xl" {{ block.shopify_attributes }}>{{ block.settings.heading | escape }}</h1>
+        {%- when 'text' -%}
+          <p class="bz-text" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+        {%- when 'buttons' -%}
+          <div class="bz-hero__buttons" {{ block.shopify_attributes }}>
+            {%- if block.settings.button_label_1 != blank -%}
+              <a href="{{ block.settings.button_link_1 }}" class="bz-btn">{{ block.settings.button_label_1 | escape }}</a>
+            {%- endif -%}
+            {%- if block.settings.button_label_2 != blank -%}
+              <a href="{{ block.settings.button_link_2 }}" class="bz-btn bz-btn--secondary" style="margin-left: 16px;">{{ block.settings.button_label_2 | escape }}</a>
+            {%- endif -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "options": [
+        { "value": "60vh", "label": "Small" },
+        { "value": "80vh", "label": "Medium" },
+        { "value": "100vh", "label": "Full screen" }
+      ],
+      "default": "80vh"
+    },
+    {
+      "type": "select",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "options": [
+        { "value": "50vh", "label": "Small" },
+        { "value": "70vh", "label": "Medium" },
+        { "value": "100vh", "label": "Full screen" }
+      ],
+      "default": "70vh"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Content Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Next-Gen Tech is Here.",
+          "label": "Heading text"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "default": "Upgrade your lifestyle with our premium gadgets and smart security.",
+          "label": "Description text"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Shop Collection",
+          "label": "Primary Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "Primary Button Link"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Secondary Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Secondary Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Hero",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

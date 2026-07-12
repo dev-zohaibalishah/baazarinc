@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "bazaarinic_hero": {
+      "type": "bazaarinic-hero",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Next-Gen Tech is Here."
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Upgrade your lifestyle with our premium gadgets and smart security."
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop Collection",
+            "button_link_1": "shopify://collections/all",
+            "button_label_2": "Learn More",
+            "button_link_2": "shopify://pages/about"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "buttons"
+      ],
+      "settings": {
+        "overlay_opacity": 60,
+        "desktop_height": "80vh",
+        "mobile_height": "70vh",
+        "text_alignment": "center"
+      }
+    },
+    "bazaarinic_featured_collection": {
+      "type": "bazaarinic-featured-collection",
+      "settings": {
+        "title": "New Arrivals",
+        "description": "Discover our latest drops in smart tech.",
+        "collection": "all",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "show_vendor": true,
+        "show_view_all": true
+      }
+    }
+  },
+  "order": [
+    "bazaarinic_hero",
+    "bazaarinic_featured_collection"
+  ]
+}

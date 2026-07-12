@@ -1,0 +1,212 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-fc {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .bz-fc__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .bz-fc__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 768px) {
+    .bz-fc__grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: 16px;
+    }
+  }
+
+  /* Product Card */
+  .bz-card {
+    background-color: var(--bz-color-card);
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-md);
+    overflow: hidden;
+    transition: var(--bz-transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--bz-color-text);
+  }
+  .bz-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--bz-color-accent);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  }
+  .bz-card__media {
+    position: relative;
+    aspect-ratio: 1;
+    background-color: #111;
+    overflow: hidden;
+  }
+  .bz-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 20px;
+    transition: transform 0.5s ease;
+  }
+  .bz-card:hover .bz-card__media img {
+    transform: scale(1.05);
+  }
+  .bz-card__info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+  }
+  .bz-card__vendor {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .bz-card__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+  .bz-card__price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--bz-color-accent);
+    margin-top: auto;
+  }
+</style>
+
+<div class="bz-section">
+  <div class="bz-fc">
+    <div class="bz-fc__header">
+      <div>
+        <h2 class="bz-heading bz-heading-lg">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.description != blank -%}
+          <p class="bz-text">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+        <a href="{{ section.settings.collection.url }}" class="bz-btn bz-btn--secondary">View All</a>
+      {%- endif -%}
+    </div>
+
+    <div class="bz-fc__grid">
+      {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+        <a href="{{ product.url }}" class="bz-card">
+          <div class="bz-card__media">
+            {%- if product.featured_media -%}
+              {{ product.featured_media | image_url: width: 600 | image_tag: loading: 'lazy' }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="bz-card__info">
+            {%- if section.settings.show_vendor -%}
+              <span class="bz-card__vendor">{{ product.vendor }}</span>
+            {%- endif -%}
+            <h3 class="bz-card__title">{{ product.title }}</h3>
+            <div class="bz-card__price">
+              {%- if product.price_varies -%}
+                From {{ product.price_min | money }}
+              {%- else -%}
+                {{ product.price | money }}
+              {%- endif -%}
+            </div>
+          </div>
+        </a>
+      {%- else -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <div class="bz-card">
+            <div class="bz-card__media">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="bz-card__info">
+              <span class="bz-card__vendor">Vendor</span>
+              <h3 class="bz-card__title">Example Product {{ i }}</h3>
+              <div class="bz-card__price">$99.99</div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Featured Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "New Arrivals",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop columns"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2",
+      "label": "Mobile columns"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View all' button"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Featured Grid"
+    }
+  ]
+}
+{% endschema %}

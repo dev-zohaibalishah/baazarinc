@@ -1,0 +1,255 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+  @media (max-width: 990px) {
+    .bz-product {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+
+  /* Media Gallery */
+  .bz-product__media-wrapper {
+    position: sticky;
+    top: 40px;
+  }
+  .bz-product__media-main {
+    background-color: var(--bz-color-card);
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-lg);
+    overflow: hidden;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .bz-product__media-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .bz-product__media-list {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .bz-product__media-item {
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-sm);
+    background-color: var(--bz-color-card);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .bz-product__media-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Info */
+  .bz-product__info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .bz-product__vendor {
+    color: var(--bz-color-accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .bz-product__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0;
+  }
+  .bz-product__price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .bz-product__description {
+    color: #a3a3a3;
+    line-height: 1.6;
+    font-size: 1rem;
+    border-top: 1px solid var(--bz-color-border);
+    padding-top: 24px;
+  }
+
+  /* Form */
+  .bz-product__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--bz-color-card);
+    padding: 24px;
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-md);
+  }
+  .bz-product__add-btn {
+    width: 100%;
+    font-size: 1.125rem;
+    padding: 16px;
+  }
+  .bz-quantity {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-sm);
+    width: max-content;
+  }
+  .bz-quantity__btn {
+    background: none;
+    border: none;
+    color: var(--bz-color-text);
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 1.25rem;
+  }
+  .bz-quantity__input {
+    background: none;
+    border: none;
+    color: var(--bz-color-text);
+    text-align: center;
+    width: 40px;
+    font-size: 1rem;
+    -moz-appearance: textfield;
+  }
+  .bz-quantity__input::-webkit-outer-spin-button,
+  .bz-quantity__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>
+
+<div class="bz-section">
+  <div class="bz-product">
+    
+    <!-- Media -->
+    <div class="bz-product__media-wrapper">
+      <div class="bz-product__media-main">
+        {%- if product.featured_media -%}
+          {{ product.featured_media | image_url: width: 1000 | image_tag: loading: 'eager', fetchpriority: 'high' }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="bz-product__media-list">
+          {%- for media in product.media -%}
+            <div class="bz-product__media-item">
+              {{ media.preview_image | image_url: width: 150 | image_tag: loading: 'lazy' }}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Info -->
+    <div class="bz-product__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'vendor' -%}
+            <div class="bz-product__vendor" {{ block.shopify_attributes }}>{{ product.vendor }}</div>
+          
+          {%- when 'title' -%}
+            <h1 class="bz-product__title bz-heading" {{ block.shopify_attributes }}>{{ product.title | escape }}</h1>
+            
+          {%- when 'price' -%}
+            <div class="bz-product__price" {{ block.shopify_attributes }}>
+              {{ product.price | money }}
+            </div>
+
+          {%- when 'form' -%}
+            <div class="bz-product__form" {{ block.shopify_attributes }}>
+              {%- form 'product', product -%}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                
+                <div style="margin-bottom: 16px;">
+                  <label style="display:block; margin-bottom: 8px; color: #a3a3a3; font-size: 0.875rem;">Quantity</label>
+                  <div class="bz-quantity">
+                    <button type="button" class="bz-quantity__btn" onclick="this.nextElementSibling.stepDown()">-</button>
+                    <input type="number" class="bz-quantity__input" name="quantity" value="1" min="1">
+                    <button type="button" class="bz-quantity__btn" onclick="this.previousElementSibling.stepUp()">+</button>
+                  </div>
+                </div>
+
+                <button type="submit" class="bz-btn bz-product__add-btn" {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                  {%- if product.selected_or_first_available_variant.available -%}
+                    Add to Cart
+                  {%- else -%}
+                    Sold Out
+                  {%- endif -%}
+                </button>
+              {%- endform -%}
+            </div>
+            
+          {%- when 'description' -%}
+            <div class="bz-product__description" {{ block.shopify_attributes }}>
+              {{ product.description }}
+            </div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Main Product",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "form",
+      "name": "Buy Buttons / Form",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Main Product",
+      "blocks": [
+        { "type": "vendor" },
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "form" },
+        { "type": "description" }
+      ]
+    }
+  ]
+}
+{% endschema %}
