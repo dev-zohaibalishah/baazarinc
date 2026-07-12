@@ -1,69 +1,230 @@
 {{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
 
 <style>
-  .bz-collection-grid {
+  .bz-collection-layout {
+    display: flex;
+    gap: 30px;
+    padding: 60px 0;
+  }
+  .bz-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+  }
+  .bz-sidebar-block {
+    border: 1px solid var(--bz-color-border);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: var(--bz-radius-sm);
+  }
+  .bz-sidebar-title {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--bz-color-border);
+    padding-bottom: 10px;
+  }
+  .bz-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .bz-category-list li {
+    margin-bottom: 10px;
+  }
+  .bz-category-list a {
+    color: #666;
+    text-decoration: none;
+    transition: var(--bz-transition);
+  }
+  .bz-category-list a:hover {
+    color: var(--bz-color-accent);
+    padding-left: 5px;
+  }
+  .bz-main-collection {
+    flex-grow: 1;
+  }
+  .bz-collection-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bz-color-topbar);
+    padding: 15px;
+    border-radius: var(--bz-radius-sm);
+    margin-bottom: 30px;
+  }
+  .bz-product-grid {
     display: grid;
     grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-    gap: 32px;
+    gap: 20px;
+  }
+  .bz-product-card {
+    border: 1px solid var(--bz-color-border);
+    padding: 15px;
+    border-radius: var(--bz-radius-sm);
+    text-align: center;
+    transition: var(--bz-transition);
+    display: flex;
+    flex-direction: column;
+  }
+  .bz-product-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  .bz-product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    margin-bottom: 15px;
+  }
+  .bz-product-title {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    flex-grow: 1;
+  }
+  .bz-product-title:hover {
+    color: var(--bz-color-accent);
+  }
+  .bz-product-price {
+    font-size: 18px;
+    color: var(--bz-color-accent);
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  .bz-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+  }
+  .bz-pagination a, .bz-pagination span {
+    padding: 10px 15px;
+    border: 1px solid var(--bz-color-border);
+    text-decoration: none;
+    color: var(--bz-color-text);
+  }
+  .bz-pagination .current {
+    background: var(--bz-color-accent);
+    color: white;
+    border-color: var(--bz-color-accent);
+  }
+  @media (max-width: 990px) {
+    .bz-collection-layout {
+      flex-direction: column;
+    }
+    .bz-sidebar {
+      width: 100%;
+    }
   }
   @media (max-width: 768px) {
-    .bz-collection-grid {
+    .bz-product-grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-      gap: 16px;
     }
   }
 </style>
 
-<div class="bz-section">
-  {%- paginate collection.products by section.settings.products_per_page -%}
-    <div class="bz-collection-grid">
-      {%- for product in collection.products -%}
-        <a href="{{ product.url }}" class="bz-card">
-          <div class="bz-card__media">
-            {%- if product.featured_media -%}
-              {{ product.featured_media | image_url: width: 600 | image_tag: loading: 'lazy' }}
-            {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {%- endif -%}
-          </div>
-          <div class="bz-card__info">
-            {%- if section.settings.show_vendor -%}
-              <span class="bz-card__vendor">{{ product.vendor }}</span>
-            {%- endif -%}
-            <h3 class="bz-card__title">{{ product.title }}</h3>
-            <div class="bz-card__price">
-              {%- if product.price_varies -%}
-                From {{ product.price_min | money }}
-              {%- else -%}
-                {{ product.price | money }}
-              {%- endif -%}
-            </div>
-          </div>
-        </a>
-      {%- else -%}
-        <p class="bz-text" style="grid-column: 1 / -1; text-align: center;">No products found in this collection.</p>
-      {%- endfor -%}
-    </div>
-    
-    {%- if paginate.pages > 1 -%}
-      <div style="margin-top: 40px; text-align: center;">
-        {{ paginate | default_pagination }}
+<div class="bz-container">
+  <div class="bz-collection-layout">
+    <!-- Sidebar -->
+    {% if section.settings.show_sidebar %}
+      <div class="bz-sidebar">
+        <div class="bz-sidebar-block">
+          <div class="bz-sidebar-title">Categories</div>
+          <ul class="bz-category-list">
+            {% for collection_link in collections %}
+              <li><a href="{{ collection_link.url }}">{{ collection_link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        <!-- Filter Block (Basic example using tags) -->
+        <div class="bz-sidebar-block">
+          <div class="bz-sidebar-title">Filter by Tags</div>
+          <ul class="bz-category-list">
+            {% for tag in collection.all_tags %}
+              <li>
+                {{ tag | link_to_tag: tag }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
-    {%- endif -%}
-  {%- endpaginate -%}
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="bz-main-collection">
+      <div class="bz-collection-toolbar">
+        <div>Showing {{ collection.products_count }} products</div>
+        <div>
+          <label>Sort by:</label>
+          <select class="bz-sort-select">
+            {% for option in collection.sort_options %}
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      {% paginate collection.products by section.settings.products_per_page %}
+        <div class="bz-product-grid">
+          {% for product in collection.products %}
+            <div class="bz-product-card">
+              <a href="{{ product.url | within: collection }}">
+                {% if product.featured_image %}
+                  <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title | escape }}" class="bz-product-image">
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'bz-product-image' }}
+                {% endif %}
+              </a>
+              <a href="{{ product.url | within: collection }}" class="bz-product-title">{{ product.title }}</a>
+              <div class="bz-product-price">{{ product.price | money }}</div>
+              <form method="post" action="/cart/add" class="bz-add-to-cart-form">
+                <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+                <button type="submit" class="bz-btn" style="width:100%;">Add to Cart</button>
+              </form>
+            </div>
+          {% else %}
+            <p>No products found in this collection.</p>
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div class="bz-pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+    </div>
+  </div>
 </div>
+
+<script>
+  document.querySelector('.bz-sort-select').addEventListener('change', function(e) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort_by', e.target.value);
+    window.location.href = url.href;
+  });
+</script>
 
 {% schema %}
 {
   "name": "Bazaarinic Coll Grid",
-  "tag": "section",
-  "class": "section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show Sidebar",
+      "default": true
+    },
     {
       "type": "range",
       "id": "products_per_page",
       "min": 8,
-      "max": 36,
+      "max": 48,
       "step": 4,
       "default": 16,
       "label": "Products per page"
@@ -71,27 +232,21 @@
     {
       "type": "range",
       "id": "columns_desktop",
-      "min": 1,
+      "min": 2,
       "max": 5,
       "step": 1,
-      "default": 4,
-      "label": "Desktop columns"
+      "default": 3,
+      "label": "Number of columns on desktop"
     },
     {
       "type": "select",
       "id": "columns_mobile",
       "options": [
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ],
       "default": "2",
-      "label": "Mobile columns"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": false,
-      "label": "Show vendor"
+      "label": "Number of columns on mobile"
     }
   ]
 }

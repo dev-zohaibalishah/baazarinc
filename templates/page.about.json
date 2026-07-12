@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "bazaarinic-about-template",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

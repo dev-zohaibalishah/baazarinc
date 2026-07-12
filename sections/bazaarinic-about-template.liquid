@@ -1,0 +1,253 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-about-hero {
+    background-color: var(--bz-color-topbar);
+    padding: 100px 0;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .bz-about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+  }
+  .bz-about-hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+  }
+  .bz-about-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+  .bz-about-subtitle {
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .bz-about-section {
+    padding: 80px 0;
+  }
+  .bz-about-grid {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+  }
+  .bz-about-image {
+    flex: 1;
+  }
+  .bz-about-image img {
+    width: 100%;
+    border-radius: var(--bz-radius-md);
+  }
+  .bz-about-text {
+    flex: 1;
+  }
+  .bz-about-text h2 {
+    font-size: 32px;
+    color: #222;
+    margin-bottom: 20px;
+  }
+  .bz-about-text p {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 15px;
+  }
+  
+  .bz-team-section {
+    background-color: var(--bz-color-topbar);
+    padding: 80px 0;
+  }
+  .bz-team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+  }
+  .bz-team-member {
+    text-align: center;
+  }
+  .bz-team-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  .bz-team-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 5px;
+  }
+  .bz-team-role {
+    color: var(--bz-color-accent);
+    font-size: 14px;
+  }
+  @media (max-width: 990px) {
+    .bz-about-grid {
+      flex-direction: column;
+    }
+    .bz-team-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<!-- Hero Section -->
+<div class="bz-about-hero" style="{% if section.settings.hero_image %}background-image: url('{{ section.settings.hero_image | image_url: width: 1600 }}');{% else %}background-color: #333;{% endif %}">
+  <div class="bz-container bz-about-hero-content">
+    <h1 class="bz-about-title">{{ section.settings.hero_title }}</h1>
+    <p class="bz-about-subtitle">{{ section.settings.hero_subtitle }}</p>
+  </div>
+</div>
+
+<!-- Story Section -->
+<div class="bz-about-section">
+  <div class="bz-container bz-about-grid">
+    <div class="bz-about-image">
+      {% if section.settings.story_image %}
+        <img src="{{ section.settings.story_image | image_url: width: 800 }}" alt="Our Story">
+      {% else %}
+        <img src="https://via.placeholder.com/800x600" alt="Placeholder">
+      {% endif %}
+    </div>
+    <div class="bz-about-text">
+      <h2>{{ section.settings.story_title }}</h2>
+      {{ section.settings.story_text }}
+    </div>
+  </div>
+</div>
+
+<!-- Team Section -->
+<div class="bz-team-section">
+  <div class="bz-container">
+    <div style="text-align:center;">
+      <h2 style="font-size: 32px; color: #222;">Meet Our Team</h2>
+    </div>
+    <div class="bz-team-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'team_member' %}
+          <div class="bz-team-member">
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.name }}" class="bz-team-img">
+            {% else %}
+              <img src="https://via.placeholder.com/300" class="bz-team-img">
+            {% endif %}
+            <div class="bz-team-name">{{ block.settings.name }}</div>
+            <div class="bz-team-role">{{ block.settings.role }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic About Us",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "About Bazaarinic"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "Discover our journey and mission."
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story Image"
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Story Title",
+      "default": "Our Story"
+    },
+    {
+      "type": "richtext",
+      "id": "story_text",
+      "label": "Story Text",
+      "default": "<p>Bazaarinic started with a vision to bring next-generation smart tech to everyone.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "team_member",
+      "name": "Team Member",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "John Doe"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role",
+          "default": "CEO"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic About Us",
+      "blocks": [
+        {
+          "type": "team_member",
+          "settings": {
+            "name": "Alex Johnson",
+            "role": "Founder & CEO"
+          }
+        },
+        {
+          "type": "team_member",
+          "settings": {
+            "name": "Sarah Lee",
+            "role": "Head of Design"
+          }
+        },
+        {
+          "type": "team_member",
+          "settings": {
+            "name": "Michael Chen",
+            "role": "Lead Engineer"
+          }
+        },
+        {
+          "type": "team_member",
+          "settings": {
+            "name": "Emma Davis",
+            "role": "Marketing Director"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -16,6 +16,8 @@
     padding: 40px;
     position: relative;
     overflow: hidden;
+    background-size: cover;
+    background-position: center;
   }
   .bz-hero-content {
     max-width: 50%;
@@ -56,6 +58,18 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
+    background-size: cover;
+    background-position: center;
+  }
+  .bz-hero-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.2));
+  }
+  .bz-banner-content {
+    position: relative;
+    z-index: 2;
   }
   .bz-banner-title {
     font-size: 24px;
@@ -72,26 +86,28 @@
 
 <div class="bz-container">
   <div class="bz-hero-container">
-    <!-- Main Slider (Simplified to static for now) -->
-    <div class="bz-hero-slider">
+    <!-- Main Slider -->
+    <div class="bz-hero-slider" style="{% if section.settings.bg_image %}background-image: url('{{ section.settings.bg_image | image_url: width: 1200 }}');{% endif %}">
       <div class="bz-hero-content">
         <div class="bz-hero-subtitle">{{ section.settings.subtitle }}</div>
-        <div class="bz-hero-title">{{ section.settings.title }}</div>
-        <div class="bz-hero-text">{{ section.settings.text }}</div>
+        <div class="bz-hero-title" style="color: {{ section.settings.text_color }}">{{ section.settings.title }}</div>
+        <div class="bz-hero-text" style="color: {{ section.settings.text_color }}">{{ section.settings.text }}</div>
         <a href="{{ section.settings.btn_link }}" class="bz-btn">{{ section.settings.btn_text }}</a>
       </div>
     </div>
     
     <!-- Side Banners -->
     <div class="bz-hero-banners">
-      <div class="bz-hero-banner">
-        <div class="bz-banner-title">Smart Watches</div>
-        <a href="#" style="color: var(--bz-color-accent); font-weight: 700; text-decoration: none;">Shop Now -></a>
-      </div>
-      <div class="bz-hero-banner">
-        <div class="bz-banner-title">Security Cameras</div>
-        <a href="#" style="color: var(--bz-color-accent); font-weight: 700; text-decoration: none;">Shop Now -></a>
-      </div>
+      {% for block in section.blocks %}
+        {% if block.type == 'banner' %}
+          <div class="bz-hero-banner" style="{% if block.settings.bg_image %}background-image: url('{{ block.settings.bg_image | image_url: width: 400 }}');{% endif %}">
+            <div class="bz-banner-content">
+              <div class="bz-banner-title">{{ block.settings.title }}</div>
+              <a href="{{ block.settings.link }}" style="color: var(--bz-color-accent); font-weight: 700; text-decoration: none;">{{ block.settings.link_text }} -></a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
 </div>
@@ -100,6 +116,11 @@
 {
   "name": "Bazaarinic Hero Slider",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
     {
       "type": "text",
       "id": "subtitle",
@@ -119,6 +140,12 @@
       "default": "Discover the latest gadgets and electronics."
     },
     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#222222"
+    },
+    {
       "type": "text",
       "id": "btn_text",
       "label": "Button Text",
@@ -130,9 +157,54 @@
       "label": "Button Link"
     }
   ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Side Banner",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Smart Watches"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Bazaarinic Hero Slider"
+      "name": "Bazaarinic Hero Slider",
+      "blocks": [
+        {
+          "type": "banner",
+          "settings": {
+            "title": "Smart Watches"
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "title": "Security Cameras"
+          }
+        }
+      ]
     }
   ]
 }

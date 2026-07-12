@@ -1,255 +1,272 @@
 {{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
 
 <style>
-  .bz-product {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    padding-top: 40px;
-    padding-bottom: 80px;
+  .bz-product-container {
+    padding: 60px 0;
   }
-  @media (max-width: 990px) {
-    .bz-product {
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
-  }
-
-  /* Media Gallery */
-  .bz-product__media-wrapper {
-    position: sticky;
-    top: 40px;
-  }
-  .bz-product__media-main {
-    background-color: var(--bz-color-card);
-    border: 1px solid var(--bz-color-border);
-    border-radius: var(--bz-radius-lg);
-    overflow: hidden;
-    aspect-ratio: 1;
+  .bz-product-top {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
+    gap: 50px;
+    margin-bottom: 60px;
   }
-  .bz-product__media-main img {
+  .bz-product-media {
+    flex: 1;
+  }
+  .bz-product-main-img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-md);
+    margin-bottom: 15px;
   }
-  .bz-product__media-list {
+  .bz-product-thumbs {
     display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    padding-bottom: 8px;
+    gap: 10px;
   }
-  .bz-product__media-item {
+  .bz-product-thumb {
     width: 80px;
     height: 80px;
     border: 1px solid var(--bz-color-border);
     border-radius: var(--bz-radius-sm);
-    background-color: var(--bz-color-card);
     cursor: pointer;
-    flex-shrink: 0;
+    object-fit: contain;
   }
-  .bz-product__media-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .bz-product-thumb.active {
+    border-color: var(--bz-color-accent);
   }
-
-  /* Info */
-  .bz-product__info {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  .bz-product-info {
+    flex: 1;
   }
-  .bz-product__vendor {
+  .bz-product-vendor {
     color: var(--bz-color-accent);
-    font-size: 0.875rem;
-    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .bz-product__title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    margin: 0;
-  }
-  .bz-product__price {
-    font-size: 1.5rem;
     font-weight: 700;
-    color: #fff;
+    font-size: 14px;
+    margin-bottom: 10px;
   }
-  .bz-product__description {
-    color: #a3a3a3;
-    line-height: 1.6;
-    font-size: 1rem;
-    border-top: 1px solid var(--bz-color-border);
-    padding-top: 24px;
+  .bz-product-title-main {
+    font-size: 32px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 20px;
   }
-
-  /* Form */
-  .bz-product__form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background: var(--bz-color-card);
-    padding: 24px;
-    border: 1px solid var(--bz-color-border);
-    border-radius: var(--bz-radius-md);
-  }
-  .bz-product__add-btn {
-    width: 100%;
-    font-size: 1.125rem;
-    padding: 16px;
-  }
-  .bz-quantity {
+  .bz-product-price-large {
+    font-size: 36px;
+    color: var(--bz-color-accent);
+    font-weight: 800;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
+    gap: 15px;
+  }
+  .bz-product-compare {
+    font-size: 20px;
+    color: #999;
+    text-decoration: line-through;
+  }
+  .bz-product-short-desc {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--bz-color-border);
+    padding-bottom: 30px;
+  }
+  .bz-form-actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  .bz-qty-selector {
+    display: flex;
     border: 1px solid var(--bz-color-border);
     border-radius: var(--bz-radius-sm);
-    width: max-content;
+    overflow: hidden;
   }
-  .bz-quantity__btn {
-    background: none;
+  .bz-qty-btn {
+    background: #f5f5f5;
     border: none;
-    color: var(--bz-color-text);
-    padding: 8px 16px;
+    padding: 0 15px;
+    font-size: 18px;
     cursor: pointer;
-    font-size: 1.25rem;
   }
-  .bz-quantity__input {
-    background: none;
-    border: none;
-    color: var(--bz-color-text);
+  .bz-qty-input {
+    width: 50px;
     text-align: center;
-    width: 40px;
-    font-size: 1rem;
-    -moz-appearance: textfield;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
   }
-  .bz-quantity__input::-webkit-outer-spin-button,
-  .bz-quantity__input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  .bz-add-btn {
+    flex: 1;
+    height: 50px;
+    font-size: 18px;
+  }
+  .bz-buy-btn {
+    width: 100%;
+    margin-top: 15px;
+    height: 50px;
+  }
+  
+  /* Tabs Area */
+  .bz-product-tabs-container {
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-sm);
+    margin-top: 40px;
+  }
+  .bz-pt-header {
+    display: flex;
+    border-bottom: 1px solid var(--bz-color-border);
+    background: var(--bz-color-topbar);
+  }
+  .bz-pt-tab {
+    padding: 15px 30px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: #666;
+    border-right: 1px solid var(--bz-color-border);
+  }
+  .bz-pt-tab.active {
+    background: #fff;
+    color: var(--bz-color-accent);
+    border-bottom: 2px solid var(--bz-color-accent);
+    margin-bottom: -1px;
+  }
+  .bz-pt-content {
+    padding: 30px;
+    display: none;
+    color: #444;
+    line-height: 1.8;
+  }
+  .bz-pt-content.active {
+    display: block;
+  }
+  @media (max-width: 990px) {
+    .bz-product-top {
+      flex-direction: column;
+    }
   }
 </style>
 
-<div class="bz-section">
-  <div class="bz-product">
-    
-    <!-- Media -->
-    <div class="bz-product__media-wrapper">
-      <div class="bz-product__media-main">
-        {%- if product.featured_media -%}
-          {{ product.featured_media | image_url: width: 1000 | image_tag: loading: 'eager', fetchpriority: 'high' }}
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        {%- endif -%}
+<div class="bz-container bz-product-container">
+  <div class="bz-product-top">
+    <!-- Media Gallery -->
+    <div class="bz-product-media">
+      {% if product.featured_media %}
+        <img src="{{ product.featured_media | image_url: width: 800 }}" alt="{{ product.title | escape }}" class="bz-product-main-img" id="bzMainImg">
+      {% endif %}
+      <div class="bz-product-thumbs">
+        {% for media in product.media %}
+          <img src="{{ media | image_url: width: 200 }}" class="bz-product-thumb {% if forloop.first %}active{% endif %}" onclick="document.getElementById('bzMainImg').src='{{ media | image_url: width: 800 }}'; document.querySelectorAll('.bz-product-thumb').forEach(t=>t.classList.remove('active')); this.classList.add('active');">
+        {% endfor %}
       </div>
-      {%- if product.media.size > 1 -%}
-        <div class="bz-product__media-list">
-          {%- for media in product.media -%}
-            <div class="bz-product__media-item">
-              {{ media.preview_image | image_url: width: 150 | image_tag: loading: 'lazy' }}
-            </div>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
     </div>
-
-    <!-- Info -->
-    <div class="bz-product__info">
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'vendor' -%}
-            <div class="bz-product__vendor" {{ block.shopify_attributes }}>{{ product.vendor }}</div>
-          
-          {%- when 'title' -%}
-            <h1 class="bz-product__title bz-heading" {{ block.shopify_attributes }}>{{ product.title | escape }}</h1>
-            
-          {%- when 'price' -%}
-            <div class="bz-product__price" {{ block.shopify_attributes }}>
+    
+    <!-- Product Info -->
+    <div class="bz-product-info">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'vendor' %}
+            <div class="bz-product-vendor">{{ product.vendor }}</div>
+          {% when 'title' %}
+            <h1 class="bz-product-title-main">{{ product.title }}</h1>
+          {% when 'price' %}
+            <div class="bz-product-price-large" id="bz-price">
               {{ product.price | money }}
+              {% if product.compare_at_price > product.price %}
+                <span class="bz-product-compare">{{ product.compare_at_price | money }}</span>
+              {% endif %}
             </div>
-
-          {%- when 'form' -%}
-            <div class="bz-product__form" {{ block.shopify_attributes }}>
-              {%- form 'product', product -%}
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                
-                <div style="margin-bottom: 16px;">
-                  <label style="display:block; margin-bottom: 8px; color: #a3a3a3; font-size: 0.875rem;">Quantity</label>
-                  <div class="bz-quantity">
-                    <button type="button" class="bz-quantity__btn" onclick="this.nextElementSibling.stepDown()">-</button>
-                    <input type="number" class="bz-quantity__input" name="quantity" value="1" min="1">
-                    <button type="button" class="bz-quantity__btn" onclick="this.previousElementSibling.stepUp()">+</button>
-                  </div>
+          {% when 'description' %}
+            <div class="bz-product-short-desc">
+              {{ product.description | strip_html | truncatewords: 40 }}
+            </div>
+          {% when 'form' %}
+            <form method="post" action="/cart/add" id="add-to-cart-form" enctype="multipart/form-data">
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              
+              <!-- Variant Selectors -->
+              {% unless product.has_only_default_variant %}
+                <div style="margin-bottom: 20px;">
+                  {% for option in product.options_with_values %}
+                    <div style="margin-bottom: 10px;">
+                      <label style="font-weight: 700; display:block; margin-bottom: 5px;">{{ option.name }}</label>
+                      <select class="bz-variant-select" style="padding: 10px; width: 100%; max-width: 300px; border: 1px solid var(--bz-color-border);">
+                        {% for value in option.values %}
+                          <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                            {{ value }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  {% endfor %}
                 </div>
+              {% endunless %}
 
-                <button type="submit" class="bz-btn bz-product__add-btn" {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
-                  {%- if product.selected_or_first_available_variant.available -%}
-                    Add to Cart
-                  {%- else -%}
-                    Sold Out
-                  {%- endif -%}
-                </button>
-              {%- endform -%}
-            </div>
-            
-          {%- when 'description' -%}
-            <div class="bz-product__description" {{ block.shopify_attributes }}>
-              {{ product.description }}
-            </div>
-
-        {%- endcase -%}
-      {%- endfor -%}
+              <div class="bz-form-actions">
+                <div class="bz-qty-selector">
+                  <button type="button" class="bz-qty-btn" onclick="document.getElementById('bz-qty').value = Math.max(1, parseInt(document.getElementById('bz-qty').value)-1)">-</button>
+                  <input type="number" id="bz-qty" name="quantity" value="1" min="1" class="bz-qty-input">
+                  <button type="button" class="bz-qty-btn" onclick="document.getElementById('bz-qty').value = parseInt(document.getElementById('bz-qty').value)+1">+</button>
+                </div>
+                <button type="submit" class="bz-btn bz-add-btn">Add to Cart</button>
+              </div>
+              
+              {{ form | payment_button }}
+            </form>
+        {% endcase %}
+      {% endfor %}
     </div>
-
+  </div>
+  
+  <!-- Product Detailed Tabs -->
+  <div class="bz-product-tabs-container">
+    <div class="bz-pt-header">
+      <div class="bz-pt-tab active" data-target="pt-desc">Description</div>
+      <div class="bz-pt-tab" data-target="pt-reviews">Reviews</div>
+      <div class="bz-pt-tab" data-target="pt-shipping">Shipping Policy</div>
+    </div>
+    <div class="bz-pt-content active" id="pt-desc">
+      {{ product.description }}
+    </div>
+    <div class="bz-pt-content" id="pt-reviews">
+      <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+      <p>Customer reviews integration area.</p>
+    </div>
+    <div class="bz-pt-content" id="pt-shipping">
+      {{ section.settings.shipping_policy }}
+    </div>
   </div>
 </div>
+
+<script>
+  document.querySelectorAll('.bz-pt-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.bz-pt-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.bz-pt-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+    });
+  });
+</script>
 
 {% schema %}
 {
   "name": "Bazaarinic Main Product",
-  "tag": "section",
-  "class": "section",
-  "blocks": [
+  "settings": [
     {
-      "type": "vendor",
-      "name": "Vendor",
-      "limit": 1
-    },
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1
-    },
-    {
-      "type": "form",
-      "name": "Buy Buttons / Form",
-      "limit": 1
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1
+      "type": "richtext",
+      "id": "shipping_policy",
+      "label": "Shipping Policy Tab Content",
+      "default": "<p>Free shipping on all orders over $99. Returns accepted within 30 days.</p>"
     }
   ],
-  "presets": [
-    {
-      "name": "Bazaarinic Main Product",
-      "blocks": [
-        { "type": "vendor" },
-        { "type": "title" },
-        { "type": "price" },
-        { "type": "form" },
-        { "type": "description" }
-      ]
-    }
+  "blocks": [
+    { "type": "vendor", "name": "Vendor", "limit": 1 },
+    { "type": "title", "name": "Title", "limit": 1 },
+    { "type": "price", "name": "Price", "limit": 1 },
+    { "type": "description", "name": "Short Description", "limit": 1 },
+    { "type": "form", "name": "Buy Buttons", "limit": 1 }
   ]
 }
 {% endschema %}

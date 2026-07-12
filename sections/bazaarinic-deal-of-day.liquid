@@ -51,6 +51,18 @@
     font-size: 12px;
     text-transform: uppercase;
   }
+  .bz-deal-price {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--bz-color-accent);
+    margin-bottom: 20px;
+  }
+  .bz-deal-compare {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 20px;
+    margin-left: 10px;
+  }
   @media (max-width: 990px) {
     .bz-deal-container {
       flex-direction: column;
@@ -61,39 +73,125 @@
 <div class="bz-deal-section">
   <div class="bz-container bz-deal-container">
     <div class="bz-deal-content">
-      <h2 class="bz-deal-title">Deal of the Day</h2>
-      <p class="bz-deal-desc">Grab the latest smart projector with an exclusive 40% discount. Limited time offer!</p>
+      <h2 class="bz-deal-title">{{ section.settings.title }}</h2>
+      <p class="bz-deal-desc">{{ section.settings.description }}</p>
       
-      <div class="bz-countdown">
+      {% assign product = all_products[section.settings.product] %}
+      
+      {% if product != blank %}
+        <div class="bz-deal-price">
+          {{ product.price | money }}
+          {% if product.compare_at_price > product.price %}
+            <span class="bz-deal-compare">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      <div class="bz-countdown" data-end-date="{{ section.settings.end_date }}">
         <div class="bz-time-box">
-          <span class="bz-time-num">05</span>
+          <span class="bz-time-num" id="bz-days">00</span>
           <span class="bz-time-label">Days</span>
         </div>
         <div class="bz-time-box">
-          <span class="bz-time-num">12</span>
+          <span class="bz-time-num" id="bz-hours">00</span>
           <span class="bz-time-label">Hours</span>
         </div>
         <div class="bz-time-box">
-          <span class="bz-time-num">45</span>
+          <span class="bz-time-num" id="bz-mins">00</span>
           <span class="bz-time-label">Mins</span>
         </div>
         <div class="bz-time-box">
-          <span class="bz-time-num">30</span>
+          <span class="bz-time-num" id="bz-secs">00</span>
           <span class="bz-time-label">Secs</span>
         </div>
       </div>
       
-      <a href="#" class="bz-btn">Shop Now</a>
+      <a href="{% if product != blank %}{{ product.url }}{% else %}{{ section.settings.button_link }}{% endif %}" class="bz-btn">{{ section.settings.button_label }}</a>
     </div>
     <div class="bz-deal-image">
-      <img src="https://via.placeholder.com/600x400" alt="Deal of the day" style="max-width: 100%; border-radius: var(--bz-radius-sm);">
+      {% if product != blank and product.featured_image %}
+        <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title | escape }}" style="max-width: 100%; border-radius: var(--bz-radius-sm);">
+      {% else %}
+        {{ 'product-2' | placeholder_svg_tag }}
+      {% endif %}
     </div>
   </div>
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const countdownEl = document.querySelector('.bz-countdown');
+    const endDateStr = countdownEl.getAttribute('data-end-date');
+    if(!endDateStr) return;
+    
+    const countDownDate = new Date(endDateStr).getTime();
+
+    const x = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("bz-days").innerHTML = "00";
+        document.getElementById("bz-hours").innerHTML = "00";
+        document.getElementById("bz-mins").innerHTML = "00";
+        document.getElementById("bz-secs").innerHTML = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("bz-days").innerHTML = days < 10 ? '0' + days : days;
+      document.getElementById("bz-hours").innerHTML = hours < 10 ? '0' + hours : hours;
+      document.getElementById("bz-mins").innerHTML = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById("bz-secs").innerHTML = seconds < 10 ? '0' + seconds : seconds;
+    }, 1000);
+  });
+</script>
+
 {% schema %}
 {
   "name": "Bazaarinic Deal of Day",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Deal of the Day"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Grab the latest smart projector with an exclusive discount. Limited time offer!"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Deal Product"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End Date",
+      "info": "Format: YYYY-MM-DDTHH:MM:SS (e.g., 2026-12-31T23:59:59)",
+      "default": "2026-12-31T23:59:59"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link (Fallback)"
+    }
+  ],
   "presets": [
     {
       "name": "Bazaarinic Deal of Day"

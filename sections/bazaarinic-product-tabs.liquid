@@ -45,13 +45,16 @@
     border-radius: var(--bz-radius-sm);
     text-align: center;
     transition: var(--bz-transition);
+    display: flex;
+    flex-direction: column;
   }
   .bz-product-card:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   }
   .bz-product-image {
     width: 100%;
-    height: auto;
+    height: 250px;
+    object-fit: contain;
     margin-bottom: 15px;
   }
   .bz-product-title {
@@ -59,11 +62,17 @@
     color: #333;
     margin-bottom: 10px;
     font-weight: 600;
+    text-decoration: none;
+    flex-grow: 1;
+  }
+  .bz-product-title:hover {
+    color: var(--bz-color-accent);
   }
   .bz-product-price {
     font-size: 18px;
     color: var(--bz-color-accent);
     font-weight: 700;
+    margin-bottom: 15px;
   }
   @media (max-width: 990px) {
     .bz-product-grid {
@@ -77,29 +86,82 @@
       gap: 15px;
     }
   }
+  .bz-tab-content {
+    display: none;
+  }
+  .bz-tab-content.active {
+    display: block;
+  }
 </style>
 
 <div class="bz-container bz-product-tabs-section">
   <div class="bz-tabs-header">
     <h2 class="bz-tabs-title">{{ section.settings.title }}</h2>
     <div class="bz-tabs-nav">
-      <div class="bz-tab-item active">New Arrivals</div>
-      <div class="bz-tab-item">Best Sellers</div>
-      <div class="bz-tab-item">Featured</div>
+      {% for block in section.blocks %}
+        <div class="bz-tab-item {% if forloop.first %}active{% endif %}" data-target="tab-{{ block.id }}">
+          {{ block.settings.tab_title }}
+        </div>
+      {% endfor %}
     </div>
   </div>
 
-  <div class="bz-product-grid">
-    {% for i in (1..8) %}
-      <div class="bz-product-card">
-        <img src="https://via.placeholder.com/300" alt="Product {{ i }}" class="bz-product-image">
-        <div class="bz-product-title">Smart Home Camera {{ i }}</div>
-        <div class="bz-product-price">$199.99</div>
-        <button class="bz-btn" style="margin-top:15px; width:100%;">Add to Cart</button>
+  <div class="bz-tabs-container">
+    {% for block in section.blocks %}
+      <div class="bz-tab-content {% if forloop.first %}active{% endif %}" id="tab-{{ block.id }}">
+        <div class="bz-product-grid">
+          {% assign collection = collections[block.settings.collection] %}
+          {% if collection.products.size > 0 %}
+            {% for product in collection.products limit: block.settings.products_to_show %}
+              <div class="bz-product-card">
+                <a href="{{ product.url }}">
+                  {% if product.featured_image %}
+                    <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title | escape }}" class="bz-product-image">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'bz-product-image' }}
+                  {% endif %}
+                </a>
+                <a href="{{ product.url }}" class="bz-product-title">{{ product.title }}</a>
+                <div class="bz-product-price">{{ product.price | money }}</div>
+                <form method="post" action="/cart/add" class="bz-add-to-cart-form">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+                  <button type="submit" class="bz-btn" style="width:100%;">Add to Cart</button>
+                </form>
+              </div>
+            {% endfor %}
+          {% else %}
+            {% for i in (1..block.settings.products_to_show) %}
+              <div class="bz-product-card">
+                {{ 'product-' | append: i | placeholder_svg_tag: 'bz-product-image' }}
+                <div class="bz-product-title">Sample Product {{ i }}</div>
+                <div class="bz-product-price">$99.99</div>
+                <button class="bz-btn" style="width:100%;">Add to Cart</button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
       </div>
     {% endfor %}
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const tabs = document.querySelectorAll('.bz-tab-item');
+    const contents = document.querySelectorAll('.bz-tab-content');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        
+        tab.classList.add('active');
+        const target = document.getElementById(tab.getAttribute('data-target'));
+        if (target) target.classList.add('active');
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {
@@ -112,9 +174,52 @@
       "default": "Trending Products"
     }
   ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Collection Tab",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "New Arrivals"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 4,
+          "max": 12,
+          "step": 4,
+          "default": 8,
+          "label": "Products to show"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Bazaarinic Product Tabs"
+      "name": "Bazaarinic Product Tabs",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "New Arrivals"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Best Sellers"
+          }
+        }
+      ]
     }
   ]
 }

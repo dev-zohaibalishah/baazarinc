@@ -40,43 +40,85 @@
 
 <div class="bz-container">
   <div class="bz-features">
-    <div class="bz-feature-item">
-      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-      <div>
-        <div class="bz-feature-title">Free Shipping</div>
-        <div class="bz-feature-desc">On all orders over $99</div>
+    {% for block in section.blocks %}
+      <div class="bz-feature-item">
+        {% if block.settings.custom_svg != blank %}
+          <div style="width: 40px; height: 40px; color: var(--bz-color-accent);">{{ block.settings.custom_svg }}</div>
+        {% else %}
+          <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+        {% endif %}
+        <div>
+          <div class="bz-feature-title">{{ block.settings.title }}</div>
+          <div class="bz-feature-desc">{{ block.settings.description }}</div>
+        </div>
       </div>
-    </div>
-    <div class="bz-feature-item">
-      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-      <div>
-        <div class="bz-feature-title">24/7 Support</div>
-        <div class="bz-feature-desc">Online support 24/7</div>
-      </div>
-    </div>
-    <div class="bz-feature-item">
-      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-      <div>
-        <div class="bz-feature-title">Secure Payment</div>
-        <div class="bz-feature-desc">100% secure payment</div>
-      </div>
-    </div>
-    <div class="bz-feature-item">
-      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-      <div>
-        <div class="bz-feature-title">Money Back Guarantee</div>
-        <div class="bz-feature-desc">30 days return window</div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 
 {% schema %}
 {
   "name": "Bazaarinic Service",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "custom_svg",
+          "label": "Custom SVG Code",
+          "info": "Paste raw SVG code here"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "On all orders over $99"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Bazaarinic Service Features"
+      "name": "Bazaarinic Service Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Free Shipping",
+            "description": "On all orders over $99"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "24/7 Support",
+            "description": "Online support 24/7"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Secure Payment",
+            "description": "100% secure payment"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Money Back",
+            "description": "30 days guarantee"
+          }
+        }
+      ]
     }
   ]
 }
