@@ -1,0 +1,301 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-promo-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+  }
+  @media (max-width: 990px) {
+    .bz-promo-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+
+  .bz-promo-grid__main {
+    position: relative;
+    border-radius: var(--bz-radius-md);
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    border: 1px solid var(--bz-color-border);
+  }
+  .bz-promo-grid__side {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  @media (max-width: 990px) {
+    .bz-promo-grid__side {
+      gap: 20px;
+    }
+  }
+  .bz-promo-grid__sub {
+    position: relative;
+    border-radius: var(--bz-radius-md);
+    overflow: hidden;
+    flex: 1;
+    aspect-ratio: 16/7;
+    border: 1px solid var(--bz-color-border);
+  }
+
+  .bz-promo-card {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+  }
+  .bz-promo-card__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .bz-promo-card__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--bz-transition);
+  }
+  .bz-promo-card:hover .bz-promo-card__bg img {
+    transform: scale(1.03);
+  }
+
+  .bz-promo-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(11, 15, 25, 0.8) 0%, rgba(11, 15, 25, 0.2) 60%, transparent 100%);
+    z-index: 2;
+  }
+  .bz-promo-card__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px;
+    z-index: 3;
+    box-sizing: border-box;
+  }
+  @media (max-width: 768px) {
+    .bz-promo-card__content {
+      padding: 24px;
+    }
+  }
+  .bz-promo-card__tag {
+    color: #38bdf8;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+  .bz-promo-card__title {
+    color: #FFFFFF;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+  .bz-promo-card__link {
+    color: #FFFFFF;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .bz-promo-card__link::after {
+    content: '→';
+    transition: transform 0.2s ease;
+  }
+  .bz-promo-card:hover .bz-promo-card__link::after {
+    transform: translateX(4px);
+  }
+</style>
+
+<div class="bz-section" style="background-color: #FFFFFF; border-bottom: 1px solid var(--bz-color-border);">
+  <div class="bz-promo-grid">
+    
+    <!-- Left Column: Main Big Promo -->
+    <div class="bz-promo-grid__main">
+      {%- if section.settings.image_main != blank -%}
+        <a href="{{ section.settings.link_main }}" class="bz-promo-card">
+          <div class="bz-promo-card__bg">
+            {{ section.settings.image_main | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+          </div>
+          <div class="bz-promo-card__overlay"></div>
+          <div class="bz-promo-card__content">
+            <span class="bz-promo-card__tag">{{ section.settings.tag_main | escape }}</span>
+            <h2 class="bz-heading bz-heading-md bz-promo-card__title">{{ section.settings.title_main | escape }}</h2>
+            <div class="bz-promo-card__link">Explore Series</div>
+          </div>
+        </a>
+      {%- else -%}
+        <div class="bz-promo-card">
+          <div class="bz-promo-card__bg">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+          <div class="bz-promo-card__overlay"></div>
+          <div class="bz-promo-card__content">
+            <span class="bz-promo-card__tag">Featured Spotlight</span>
+            <h2 class="bz-heading bz-heading-md bz-promo-card__title">Pro Cinema Laser Projectors</h2>
+            <div class="bz-promo-card__link">Explore Series</div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Right Column: Two Sub Stacked Banners -->
+    <div class="bz-promo-grid__side">
+      <!-- Sub Promo 1 -->
+      <div class="bz-promo-grid__sub">
+        {%- if section.settings.image_sub1 != blank -%}
+          <a href="{{ section.settings.link_sub1 }}" class="bz-promo-card">
+            <div class="bz-promo-card__bg">
+              {{ section.settings.image_sub1 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+            </div>
+            <div class="bz-promo-card__overlay"></div>
+            <div class="bz-promo-card__content">
+              <span class="bz-promo-card__tag">{{ section.settings.tag_sub1 | escape }}</span>
+              <h3 class="bz-heading bz-heading-md bz-promo-card__title" style="font-size: 1.35rem;">{{ section.settings.title_sub1 | escape }}</h3>
+              <div class="bz-promo-card__link">Shop Now</div>
+            </div>
+          </a>
+        {%- else -%}
+          <div class="bz-promo-card">
+            <div class="bz-promo-card__bg">
+              {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="bz-promo-card__overlay"></div>
+            <div class="bz-promo-card__content">
+              <span class="bz-promo-card__tag">Smart Home Security</span>
+              <h3 class="bz-heading bz-heading-md bz-promo-card__title" style="font-size: 1.35rem;">Guardhouse Smart Cam Series</h3>
+              <div class="bz-promo-card__link">Shop Now</div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Sub Promo 2 -->
+      <div class="bz-promo-grid__sub">
+        {%- if section.settings.image_sub2 != blank -%}
+          <a href="{{ section.settings.link_sub2 }}" class="bz-promo-card">
+            <div class="bz-promo-card__bg">
+              {{ section.settings.image_sub2 | image_url: width: 800 | image_tag: loading: 'lazy' }}
+            </div>
+            <div class="bz-promo-card__overlay"></div>
+            <div class="bz-promo-card__content">
+              <span class="bz-promo-card__tag">{{ section.settings.tag_sub2 | escape }}</span>
+              <h3 class="bz-heading bz-heading-md bz-promo-card__title" style="font-size: 1.35rem;">{{ section.settings.title_sub2 | escape }}</h3>
+              <div class="bz-promo-card__link">Shop Now</div>
+            </div>
+          </a>
+        {%- else -%}
+          <div class="bz-promo-card">
+            <div class="bz-promo-card__bg">
+              {{ 'collection-3' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="bz-promo-card__overlay"></div>
+            <div class="bz-promo-card__content">
+              <span class="bz-promo-card__tag">Pro Gaming Displays</span>
+              <h3 class="bz-heading bz-heading-md bz-promo-card__title" style="font-size: 1.35rem;">Elite Curved Monitor Series</h3>
+              <div class="bz-promo-card__link">Shop Now</div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Promo Grid",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main Spotlight Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_main",
+      "label": "Spotlight Image"
+    },
+    {
+      "type": "text",
+      "id": "tag_main",
+      "label": "Spotlight Tag",
+      "default": "Featured Spotlight"
+    },
+    {
+      "type": "text",
+      "id": "title_main",
+      "label": "Spotlight Title",
+      "default": "Pro Cinema Laser Projectors"
+    },
+    {
+      "type": "url",
+      "id": "link_main",
+      "label": "Spotlight Link"
+    },
+    {
+      "type": "header",
+      "content": "Sub Banner 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_sub1",
+      "label": "Sub 1 Image"
+    },
+    {
+      "type": "text",
+      "id": "tag_sub1",
+      "label": "Sub 1 Tag",
+      "default": "Smart Home Security"
+    },
+    {
+      "type": "text",
+      "id": "title_sub1",
+      "label": "Sub 1 Title",
+      "default": "Guardhouse Smart Cam Series"
+    },
+    {
+      "type": "url",
+      "id": "link_sub1",
+      "label": "Sub 1 Link"
+    },
+    {
+      "type": "header",
+      "content": "Sub Banner 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_sub2",
+      "label": "Sub 2 Image"
+    },
+    {
+      "type": "text",
+      "id": "tag_sub2",
+      "label": "Sub 2 Tag",
+      "default": "Pro Gaming Displays"
+    },
+    {
+      "type": "text",
+      "id": "title_sub2",
+      "label": "Sub 2 Title",
+      "default": "Elite Curved Monitor Series"
+    },
+    {
+      "type": "url",
+      "id": "link_sub2",
+      "label": "Sub 2 Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Promo Grid"
+    }
+  ]
+}
+{% endschema %}

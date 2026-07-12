@@ -37,6 +37,35 @@
         "text_alignment": "center"
       }
     },
+    "bazaarinic_promo_grid": {
+      "type": "bazaarinic-promo-grid",
+      "settings": {
+        "tag_main": "Featured Spotlight",
+        "title_main": "Pro Cinema Laser Projectors",
+        "tag_sub1": "Smart Home Security",
+        "title_sub1": "Guardhouse Smart Cam Series",
+        "tag_sub2": "Pro Gaming Displays",
+        "title_sub2": "Elite Curved Monitor Series"
+      }
+    },
+    "bazaarinic_tabbed_browser": {
+      "type": "bazaarinic-tabbed-collections",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "collection": "all"
+          }
+        }
+      },
+      "block_order": [
+        "tab_1"
+      ],
+      "settings": {
+        "heading": "Browse Innovation",
+        "subheading": "Instantly switch categories to find the correct gear for your tech environment."
+      }
+    },
     "bazaarinic_certification": {
       "type": "bazaarinic-certification",
       "blocks": {
@@ -149,26 +178,14 @@
         "heading": "Technical Specifications",
         "subheading": "Full breakdown of Lumex Flix display, sound, and smart engine parameters."
       }
-    },
-    "bazaarinic_featured_collection": {
-      "type": "bazaarinic-featured-collection",
-      "settings": {
-        "title": "New Arrivals",
-        "description": "Discover our latest drops in smart tech.",
-        "collection": "all",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "show_vendor": true,
-        "show_view_all": true
-      }
     }
   },
   "order": [
     "bazaarinic_hero",
+    "bazaarinic_promo_grid",
+    "bazaarinic_tabbed_browser",
     "bazaarinic_certification",
     "bazaarinic_tech_features",
-    "bazaarinic_specs_accordion",
-    "bazaarinic_featured_collection"
+    "bazaarinic_specs_accordion"
   ]
 }
