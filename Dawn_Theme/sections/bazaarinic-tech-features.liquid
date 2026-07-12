@@ -1,0 +1,161 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-features {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .bz-features__header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .bz-features__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 768px) {
+    .bz-features__grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+
+  .bz-feature-card {
+    background: #111;
+    border: 1px solid var(--bz-color-border);
+    border-radius: var(--bz-radius-lg);
+    padding: 32px;
+    transition: var(--bz-transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .bz-feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--bz-color-accent), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .bz-feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 240, 255, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 240, 255, 0.05);
+  }
+  .bz-feature-card:hover::before {
+    transform: translateX(100%);
+  }
+
+  .bz-feature-card__icon {
+    font-size: 2.25rem;
+    line-height: 1;
+    margin-bottom: 24px;
+    display: inline-block;
+  }
+  .bz-feature-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    color: #fff;
+  }
+  .bz-feature-card__description {
+    font-size: 0.95rem;
+    color: #a3a3a3;
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>
+
+<div class="bz-section">
+  <div class="bz-features">
+    <div class="bz-features__header">
+      <h2 class="bz-heading bz-heading-lg">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="bz-text">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="bz-features__grid">
+      {%- for block in section.blocks -%}
+        <div class="bz-feature-card" {{ block.shopify_attributes }}>
+          <span class="bz-feature-card__icon">{{ block.settings.icon | escape }}</span>
+          <h3 class="bz-feature-card__title">{{ block.settings.title | escape }}</h3>
+          <p class="bz-feature-card__description">{{ block.settings.description | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Tech Features",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Unrivaled Hardware Engineering"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Explore the next-generation capabilities built inside the Lumex Flix Series."
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Desktop Columns"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Highlight",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (Emoji)",
+          "default": "⚡"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title",
+          "default": "Dolby Atmos Audio"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Feature Description",
+          "default": "Envelop your space with multi-directional cinema surround audio."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Tech Features",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "🎥", "title": "120-Inch Cinematic projection", "description": "Fill any wall space with massive, bright displays." } },
+        { "type": "feature", "settings": { "icon": "🔊", "title": "Dolby Surround Audio", "description": "Crystal clear sound with built-in high fidelity soundstage speakers." } },
+        { "type": "feature", "settings": { "icon": "💡", "title": "1000 ANSI Lumens", "description": "Optimized projection contrast, brilliant colors during day or night." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

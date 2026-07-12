@@ -1,0 +1,220 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-specs {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .bz-specs__header {
+    text-align: center;
+  }
+  .bz-specs__accordion {
+    border-top: 1px solid var(--bz-color-border);
+  }
+  .bz-specs__item {
+    border-bottom: 1px solid var(--bz-color-border);
+  }
+  .bz-specs__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #fff;
+    list-style: none;
+    transition: var(--bz-transition);
+  }
+  .bz-specs__summary::-webkit-details-marker {
+    display: none;
+  }
+  .bz-specs__summary:hover {
+    color: var(--bz-color-accent);
+  }
+  .bz-specs__icon {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+  }
+  details[open] .bz-specs__icon {
+    transform: rotate(45deg);
+  }
+  .bz-specs__content {
+    padding-bottom: 24px;
+    color: #a3a3a3;
+  }
+  
+  .bz-specs__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+  .bz-specs__row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .bz-specs__row:last-child {
+    border-bottom: none;
+  }
+  .bz-specs__key {
+    padding: 12px 0;
+    font-weight: 600;
+    color: #d4d4d4;
+    width: 30%;
+  }
+  .bz-specs__val {
+    padding: 12px 0;
+    color: #888;
+  }
+</style>
+
+<div class="bz-section">
+  <div class="bz-specs">
+    
+    <div class="bz-specs__header">
+      <h2 class="bz-heading bz-heading-lg">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="bz-text">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="bz-specs__accordion">
+      {%- for block in section.blocks -%}
+        <details class="bz-specs__item" {{ block.shopify_attributes }}>
+          <summary class="bz-specs__summary">
+            {{ block.settings.title | escape }}
+            <span class="bz-specs__icon">+</span>
+          </summary>
+          <div class="bz-specs__content">
+            <table class="bz-specs__table">
+              {%- if block.settings.spec_key_1 != blank -%}
+                <tr class="bz-specs__row">
+                  <td class="bz-specs__key">{{ block.settings.spec_key_1 | escape }}</td>
+                  <td class="bz-specs__val">{{ block.settings.spec_val_1 | escape }}</td>
+                </tr>
+              {%- endif -%}
+              {%- if block.settings.spec_key_2 != blank -%}
+                <tr class="bz-specs__row">
+                  <td class="bz-specs__key">{{ block.settings.spec_key_2 | escape }}</td>
+                  <td class="bz-specs__val">{{ block.settings.spec_val_2 | escape }}</td>
+                </tr>
+              {%- endif -%}
+              {%- if block.settings.spec_key_3 != blank -%}
+                <tr class="bz-specs__row">
+                  <td class="bz-specs__key">{{ block.settings.spec_key_3 | escape }}</td>
+                  <td class="bz-specs__val">{{ block.settings.spec_val_3 | escape }}</td>
+                </tr>
+              {%- endif -%}
+            </table>
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Specs Accordion",
+  "tag": "section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Technical Specifications"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Full breakdown of Lumex Flix display, sound, and smart engine parameters."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Spec Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "Display Specifications"
+        },
+        {
+          "type": "text",
+          "id": "spec_key_1",
+          "label": "Specification Name 1",
+          "default": "Resolution"
+        },
+        {
+          "type": "text",
+          "id": "spec_val_1",
+          "label": "Specification Value 1",
+          "default": "4K Ultra HD (3840 x 2160)"
+        },
+        {
+          "type": "text",
+          "id": "spec_key_2",
+          "label": "Specification Name 2",
+          "default": "Light Source"
+        },
+        {
+          "type": "text",
+          "id": "spec_val_2",
+          "label": "Specification Value 2",
+          "default": "Laser Engine (ALPD)"
+        },
+        {
+          "type": "text",
+          "id": "spec_key_3",
+          "label": "Specification Name 3",
+          "default": "Max Screen Size"
+        },
+        {
+          "type": "text",
+          "id": "spec_val_3",
+          "label": "Specification Value 3",
+          "default": "120-Inch Cinematic projection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Specs Accordion",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Optics & Display",
+            "spec_key_1": "Resolution",
+            "spec_val_1": "1080P Native, 4K Decoding",
+            "spec_key_2": "Contrast Ratio",
+            "spec_val_2": "2000:1",
+            "spec_key_3": "ANSI Lumens",
+            "spec_val_3": "1000 ANSI"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Smart OS & Hardware",
+            "spec_key_1": "OS",
+            "spec_val_1": "Official Android TV 11.0",
+            "spec_key_2": "RAM/ROM",
+            "spec_val_2": "2GB DDR4 + 16GB eMMC",
+            "spec_key_3": "Certifications",
+            "spec_val_3": "Netflix, YouTube, Prime Video"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

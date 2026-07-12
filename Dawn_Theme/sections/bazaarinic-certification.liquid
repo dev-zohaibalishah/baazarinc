@@ -1,0 +1,192 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-cert-section {
+    background: linear-gradient(135deg, #0e0e10 0%, #050505 100%);
+    border-top: 1px solid var(--bz-color-border);
+    border-bottom: 1px solid var(--bz-color-border);
+  }
+  .bz-cert {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  @media (max-width: 990px) {
+    .bz-cert {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      text-align: center;
+    }
+  }
+
+  .bz-cert__visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .bz-cert__glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .bz-cert__badge-container {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: var(--bz-radius-lg);
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    max-width: 500px;
+  }
+  .bz-cert__badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 120px;
+  }
+  .bz-cert__badge-icon {
+    font-size: 2.5rem;
+    color: var(--bz-color-accent);
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  }
+  .bz-cert__badge-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e5e5e5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .bz-cert__tag {
+    color: var(--bz-color-accent);
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .bz-cert__title {
+    margin-bottom: 20px;
+  }
+  .bz-cert__text {
+    margin-bottom: 30px;
+  }
+</style>
+
+<div class="bz-cert-section bz-section">
+  <div class="bz-cert">
+    
+    <!-- Left Column: Copywriting -->
+    <div class="bz-cert__content">
+      <span class="bz-cert__tag">{{ section.settings.tagline | escape }}</span>
+      <h2 class="bz-heading bz-heading-lg bz-cert__title">{{ section.settings.title | escape }}</h2>
+      <p class="bz-text bz-cert__text">{{ section.settings.description | escape }}</p>
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link }}" class="bz-btn">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    <!-- Right Column: Visual badging -->
+    <div class="bz-cert__visual">
+      <div class="bz-cert__glow"></div>
+      <div class="bz-cert__badge-container">
+        {%- for block in section.blocks -%}
+          <div class="bz-cert__badge" {{ block.shopify_attributes }}>
+            <span class="bz-cert__badge-icon">
+              {%- if block.settings.icon_text != blank -%}
+                {{ block.settings.icon_text | escape }}
+              {%- else -%}
+                ✓
+              {%- endif -%}
+            </span>
+            <span class="bz-cert__badge-label">{{ block.settings.label | escape }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Certifications",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Official Licensing"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Certified Smart Tech Experience"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Enjoy seamless access to Netflix, Prime Video, and thousands of apps natively, with official Google and Netflix system licensing built right in."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_text",
+          "label": "Badge Short Text (e.g. NETFLIX, 4K)",
+          "default": "4K"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Badge Label",
+          "default": "Ultra HD Resolution"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Certifications",
+      "blocks": [
+        { "type": "badge", "settings": { "icon_text": "NETFLIX", "label": "Official App" } },
+        { "type": "badge", "settings": { "icon_text": "4K UHD", "label": "Output Support" } },
+        { "type": "badge", "settings": { "icon_text": "DOLBY", "label": "Surround Sound" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
