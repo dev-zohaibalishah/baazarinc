@@ -2,14 +2,15 @@
 
 <style>
   .bz-cert-section {
-    background: linear-gradient(135deg, #0e0e10 0%, #050505 100%);
-    border-top: 1px solid var(--bz-color-border);
-    border-bottom: 1px solid var(--bz-color-border);
+    background-color: var(--bz-color-dark-bg);
+    color: var(--bz-color-dark-text);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
   .bz-cert {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 80px;
     align-items: center;
   }
   @media (max-width: 990px) {
@@ -20,70 +21,63 @@
     }
   }
 
-  .bz-cert__visual {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .bz-cert__glow {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
-    z-index: 1;
-    pointer-events: none;
-  }
-  .bz-cert__badge-container {
-    position: relative;
-    z-index: 2;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    border-radius: var(--bz-radius-lg);
-    padding: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-    max-width: 500px;
-  }
-  .bz-cert__badge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    width: 120px;
-  }
-  .bz-cert__badge-icon {
-    font-size: 2.5rem;
-    color: var(--bz-color-accent);
-    font-weight: 800;
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-  }
-  .bz-cert__badge-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #e5e5e5;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
-  }
-
   .bz-cert__tag {
-    color: var(--bz-color-accent);
+    color: #38bdf8; /* Clean blue-sky accent */
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     display: inline-block;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
   .bz-cert__title {
-    margin-bottom: 20px;
+    color: #FFFFFF;
+    margin-bottom: 24px;
   }
   .bz-cert__text {
-    margin-bottom: 30px;
+    margin-bottom: 36px;
+    color: #9CA3AF;
+  }
+
+  .bz-cert__badge-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 480px) {
+    .bz-cert__badge-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  .bz-cert__badge {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--bz-radius-md);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: var(--bz-transition);
+  }
+  .bz-cert__badge:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .bz-cert__badge-icon {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+  }
+  .bz-cert__badge-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
   }
 </style>
 
@@ -94,29 +88,20 @@
     <div class="bz-cert__content">
       <span class="bz-cert__tag">{{ section.settings.tagline | escape }}</span>
       <h2 class="bz-heading bz-heading-lg bz-cert__title">{{ section.settings.title | escape }}</h2>
-      <p class="bz-text bz-cert__text">{{ section.settings.description | escape }}</p>
+      <p class="bz-text bz-text-dark-theme bz-cert__text">{{ section.settings.description | escape }}</p>
       {%- if section.settings.button_label != blank -%}
-        <a href="{{ section.settings.button_link }}" class="bz-btn">{{ section.settings.button_label | escape }}</a>
+        <a href="{{ section.settings.button_link }}" class="bz-btn bz-btn--dark">{{ section.settings.button_label | escape }}</a>
       {%- endif -%}
     </div>
 
-    <!-- Right Column: Visual badging -->
-    <div class="bz-cert__visual">
-      <div class="bz-cert__glow"></div>
-      <div class="bz-cert__badge-container">
-        {%- for block in section.blocks -%}
-          <div class="bz-cert__badge" {{ block.shopify_attributes }}>
-            <span class="bz-cert__badge-icon">
-              {%- if block.settings.icon_text != blank -%}
-                {{ block.settings.icon_text | escape }}
-              {%- else -%}
-                ✓
-              {%- endif -%}
-            </span>
-            <span class="bz-cert__badge-label">{{ block.settings.label | escape }}</span>
-          </div>
-        {%- endfor -%}
-      </div>
+    <!-- Right Column: Visual Badges -->
+    <div class="bz-cert__badge-container">
+      {%- for block in section.blocks -%}
+        <div class="bz-cert__badge" {{ block.shopify_attributes }}>
+          <span class="bz-cert__badge-icon">{{ block.settings.icon_text | escape }}</span>
+          <span class="bz-cert__badge-label">{{ block.settings.label | escape }}</span>
+        </div>
+      {%- endfor -%}
     </div>
 
   </div>

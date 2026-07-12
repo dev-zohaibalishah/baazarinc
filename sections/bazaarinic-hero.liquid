@@ -30,20 +30,27 @@
   .bz-hero__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(10,10,10,0.8));
+    background: linear-gradient(to right, rgba(11, 15, 25, 0.9) 0%, rgba(11, 15, 25, 0.4) 60%, rgba(11, 15, 25, 0.2) 100%);
     z-index: 2;
   }
   .bz-hero__content {
     position: relative;
     z-index: 3;
-    max-width: 800px;
-    padding: 40px;
-    text-align: {{ section.settings.text_alignment }};
+    max-width: 650px;
+    padding: 60px;
+    background: none; /* ViewSonic uses clean overlay directly without container boxes */
+    border: none;
+    box-shadow: none;
+    color: #FFFFFF;
+  }
+  .bz-hero__content h1 {
+    color: #FFFFFF;
+    margin-bottom: 24px;
   }
   .bz-hero__content .bz-text {
-    margin-bottom: 32px;
-    font-size: 1.125rem;
-    color: #e5e5e5;
+    margin-bottom: 36px;
+    font-size: 1.15rem;
+    color: #E5E7EB;
   }
 </style>
 
@@ -57,7 +64,7 @@
   </div>
   <div class="bz-hero__overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}"></div>
   
-  <div class="bz-hero__content bz-glass">
+  <div class="bz-hero__content">
     {%- for block in section.blocks -%}
       {%- case block.type -%}
         {%- when 'heading' -%}
@@ -67,10 +74,10 @@
         {%- when 'buttons' -%}
           <div class="bz-hero__buttons" {{ block.shopify_attributes }}>
             {%- if block.settings.button_label_1 != blank -%}
-              <a href="{{ block.settings.button_link_1 }}" class="bz-btn">{{ block.settings.button_label_1 | escape }}</a>
+              <a href="{{ block.settings.button_link_1 }}" class="bz-btn bz-btn--dark">{{ block.settings.button_label_1 | escape }}</a>
             {%- endif -%}
             {%- if block.settings.button_label_2 != blank -%}
-              <a href="{{ block.settings.button_link_2 }}" class="bz-btn bz-btn--secondary" style="margin-left: 16px;">{{ block.settings.button_label_2 | escape }}</a>
+              <a href="{{ block.settings.button_link_2 }}" class="bz-btn bz-btn--dark-secondary" style="margin-left: 16px;">{{ block.settings.button_label_2 | escape }}</a>
             {%- endif -%}
           </div>
       {%- endcase -%}
@@ -97,7 +104,7 @@
       "step": 10,
       "unit": "%",
       "label": "Overlay Opacity",
-      "default": 60
+      "default": 80
     },
     {
       "type": "select",
@@ -129,7 +136,7 @@
         { "value": "flex-start", "label": "Left" },
         { "value": "center", "label": "Center" }
       ],
-      "default": "center"
+      "default": "flex-start"
     }
   ],
   "blocks": [
