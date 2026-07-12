@@ -1,0 +1,121 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-product-tabs-section {
+    padding: 60px 0;
+  }
+  .bz-tabs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--bz-color-border);
+    padding-bottom: 10px;
+  }
+  .bz-tabs-title {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #222;
+    margin: 0;
+  }
+  .bz-tabs-nav {
+    display: flex;
+    gap: 20px;
+  }
+  .bz-tab-item {
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: var(--bz-transition);
+  }
+  .bz-tab-item.active {
+    color: var(--bz-color-accent);
+  }
+  .bz-product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .bz-product-card {
+    border: 1px solid var(--bz-color-border);
+    padding: 15px;
+    border-radius: var(--bz-radius-sm);
+    text-align: center;
+    transition: var(--bz-transition);
+  }
+  .bz-product-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  .bz-product-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+  }
+  .bz-product-title {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .bz-product-price {
+    font-size: 18px;
+    color: var(--bz-color-accent);
+    font-weight: 700;
+  }
+  @media (max-width: 990px) {
+    .bz-product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 768px) {
+    .bz-tabs-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+  }
+</style>
+
+<div class="bz-container bz-product-tabs-section">
+  <div class="bz-tabs-header">
+    <h2 class="bz-tabs-title">{{ section.settings.title }}</h2>
+    <div class="bz-tabs-nav">
+      <div class="bz-tab-item active">New Arrivals</div>
+      <div class="bz-tab-item">Best Sellers</div>
+      <div class="bz-tab-item">Featured</div>
+    </div>
+  </div>
+
+  <div class="bz-product-grid">
+    {% for i in (1..8) %}
+      <div class="bz-product-card">
+        <img src="https://via.placeholder.com/300" alt="Product {{ i }}" class="bz-product-image">
+        <div class="bz-product-title">Smart Home Camera {{ i }}</div>
+        <div class="bz-product-price">$199.99</div>
+        <button class="bz-btn" style="margin-top:15px; width:100%;">Add to Cart</button>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Product Tabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Trending Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Product Tabs"
+    }
+  ]
+}
+{% endschema %}

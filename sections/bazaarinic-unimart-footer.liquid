@@ -1,0 +1,105 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-footer {
+    background-color: var(--bz-color-footer);
+    color: var(--bz-color-footer-text);
+    padding-top: 60px;
+    font-size: 14px;
+  }
+  .bz-footer-top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #333333;
+  }
+  .bz-footer-col h4 {
+    color: #FFFFFF;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  .bz-footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .bz-footer-col ul li {
+    margin-bottom: 12px;
+  }
+  .bz-footer-col ul li a {
+    color: var(--bz-color-footer-text);
+    text-decoration: none;
+    transition: var(--bz-transition);
+  }
+  .bz-footer-col ul li a:hover {
+    color: var(--bz-color-accent);
+    padding-left: 5px;
+  }
+  .bz-footer-bottom {
+    padding: 20px 0;
+    text-align: center;
+    color: #999999;
+  }
+  @media (max-width: 768px) {
+    .bz-footer-top {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<footer class="bz-footer">
+  <div class="bz-container">
+    <div class="bz-footer-top">
+      <div class="bz-footer-col">
+        <h4>About Us</h4>
+        <p>Bazaarinic is your one-stop destination for next-gen technology, gadgets, and electronics.</p>
+        <p><strong>Phone:</strong> +1 234 567 890</p>
+        <p><strong>Email:</strong> support@bazaarinic.com</p>
+      </div>
+      <div class="bz-footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Delivery Information</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="bz-footer-col">
+        <h4>My Account</h4>
+        <ul>
+          <li><a href="{{ routes.account_url }}">My Account</a></li>
+          <li><a href="#">Order History</a></li>
+          <li><a href="#">Wishlist</a></li>
+          <li><a href="#">Newsletter</a></li>
+        </ul>
+      </div>
+      <div class="bz-footer-col">
+        <h4>Newsletter</h4>
+        <p>Subscribe to our newsletter to receive news and updates.</p>
+        <form style="display:flex; margin-top: 15px;">
+          <input type="email" placeholder="Your Email Address" style="padding: 10px; width:100%; border:none;">
+          <button type="submit" class="bz-btn" style="border-radius: 0;">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="bz-footer-bottom">
+      &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All Rights Reserved.
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Bazaarinic Unimart Footer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Bazaarinic Unimart Footer"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,139 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-hero-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .bz-hero-slider {
+    flex: 3;
+    background-color: var(--bz-color-topbar);
+    border-radius: var(--bz-radius-sm);
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bz-hero-content {
+    max-width: 50%;
+    z-index: 2;
+  }
+  .bz-hero-subtitle {
+    color: var(--bz-color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  .bz-hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+  .bz-hero-text {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  .bz-hero-banners {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .bz-hero-banner {
+    flex: 1;
+    background-color: var(--bz-color-topbar);
+    border-radius: var(--bz-radius-sm);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .bz-banner-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #222;
+  }
+  @media (max-width: 990px) {
+    .bz-hero-container {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="bz-container">
+  <div class="bz-hero-container">
+    <!-- Main Slider (Simplified to static for now) -->
+    <div class="bz-hero-slider">
+      <div class="bz-hero-content">
+        <div class="bz-hero-subtitle">{{ section.settings.subtitle }}</div>
+        <div class="bz-hero-title">{{ section.settings.title }}</div>
+        <div class="bz-hero-text">{{ section.settings.text }}</div>
+        <a href="{{ section.settings.btn_link }}" class="bz-btn">{{ section.settings.btn_text }}</a>
+      </div>
+    </div>
+    
+    <!-- Side Banners -->
+    <div class="bz-hero-banners">
+      <div class="bz-hero-banner">
+        <div class="bz-banner-title">Smart Watches</div>
+        <a href="#" style="color: var(--bz-color-accent); font-weight: 700; text-decoration: none;">Shop Now -></a>
+      </div>
+      <div class="bz-hero-banner">
+        <div class="bz-banner-title">Security Cameras</div>
+        <a href="#" style="color: var(--bz-color-accent); font-weight: 700; text-decoration: none;">Shop Now -></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Hero Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Big Sale"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "New Smart Tech Collection"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Discover the latest gadgets and electronics."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Hero Slider"
+    }
+  ]
+}
+{% endschema %}

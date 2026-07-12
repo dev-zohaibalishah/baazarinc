@@ -1,0 +1,197 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-header-top {
+    background-color: var(--bz-color-topbar);
+    border-bottom: 1px solid var(--bz-color-border);
+    padding: 8px 0;
+    font-size: 12px;
+    color: #666;
+  }
+  .bz-header-top-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bz-header-main {
+    padding: 25px 0;
+    border-bottom: 1px solid var(--bz-color-border);
+  }
+  .bz-header-main-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+  }
+  .bz-logo img {
+    max-height: 40px;
+  }
+  .bz-logo span {
+    font-size: 24px;
+    font-weight: 800;
+    color: #222;
+    text-transform: uppercase;
+  }
+  .bz-search-bar {
+    flex-grow: 1;
+    display: flex;
+    border: 2px solid var(--bz-color-accent);
+    border-radius: var(--bz-radius-sm);
+    overflow: hidden;
+  }
+  .bz-search-bar input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+  }
+  .bz-search-bar button {
+    background-color: var(--bz-color-accent);
+    color: white;
+    border: none;
+    padding: 0 25px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .bz-header-icons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .bz-header-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--bz-color-text);
+    font-size: 12px;
+  }
+  .bz-header-icon svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+  }
+  .bz-nav-bar {
+    background-color: #222222;
+  }
+  .bz-nav-bar-inner {
+    display: flex;
+    align-items: center;
+  }
+  .bz-category-menu {
+    background-color: var(--bz-color-accent);
+    color: white;
+    padding: 15px 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 250px;
+  }
+  .bz-main-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0 20px;
+  }
+  .bz-main-nav li a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    display: block;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .bz-main-nav li a:hover {
+    color: var(--bz-color-accent);
+  }
+</style>
+
+<div class="bz-header" id="bazaarinic-header">
+  <!-- Top Bar -->
+  <div class="bz-header-top">
+    <div class="bz-container bz-header-top-inner">
+      <div class="bz-top-left">
+        <span>{{ section.settings.welcome_text }}</span>
+      </div>
+      <div class="bz-top-right">
+        <span>Track Order</span> | <span>USD $</span> | <span>English</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <div class="bz-header-main">
+    <div class="bz-container bz-header-main-inner">
+      <a href="{{ routes.root_url }}" class="bz-logo">
+        {% if section.settings.logo != blank %}
+          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}">
+        {% else %}
+          <span>{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      <form action="{{ routes.search_url }}" method="get" class="bz-search-bar">
+        <input type="text" name="q" placeholder="Search for products, brands and more...">
+        <button type="submit">Search</button>
+      </form>
+
+      <div class="bz-header-icons">
+        <a href="{{ routes.account_url }}" class="bz-header-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          Account
+        </a>
+        <a href="{{ routes.cart_url }}" class="bz-header-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          Cart
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <div class="bz-nav-bar">
+    <div class="bz-container bz-nav-bar-inner">
+      <div class="bz-category-menu">
+        <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        All Categories
+      </div>
+      <ul class="bz-main-nav">
+        {% for link in section.settings.menu.links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Unimart Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "welcome_text",
+      "label": "Welcome Text",
+      "default": "Welcome to our online store!"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bazaarinic Unimart Header"
+    }
+  ]
+}
+{% endschema %}

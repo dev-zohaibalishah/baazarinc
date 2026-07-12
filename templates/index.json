@@ -1,191 +1,39 @@
 {
   "sections": {
-    "bazaarinic_hero": {
-      "type": "bazaarinic-hero",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Next-Gen Tech is Here."
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "Upgrade your lifestyle with our premium gadgets and smart security."
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop Collection",
-            "button_link_1": "shopify://collections/all",
-            "button_label_2": "Learn More",
-            "button_link_2": "shopify://pages/about"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text",
-        "buttons"
-      ],
+    "hero_slider": {
+      "type": "bazaarinic-hero-slider",
       "settings": {
-        "overlay_opacity": 60,
-        "desktop_height": "80vh",
-        "mobile_height": "70vh",
-        "text_alignment": "center"
+        "subtitle": "Big Sale",
+        "title": "New Smart Tech Collection",
+        "text": "Discover the latest gadgets and electronics.",
+        "btn_text": "Shop Now",
+        "btn_link": "shopify:\/\/collections\/all"
       }
     },
-    "bazaarinic_promo_grid": {
-      "type": "bazaarinic-promo-grid",
+    "service_features": {
+      "type": "bazaarinic-service-features",
+      "settings": {}
+    },
+    "product_tabs": {
+      "type": "bazaarinic-product-tabs",
       "settings": {
-        "tag_main": "Featured Spotlight",
-        "title_main": "Pro Cinema Laser Projectors",
-        "tag_sub1": "Smart Home Security",
-        "title_sub1": "Guardhouse Smart Cam Series",
-        "tag_sub2": "Pro Gaming Displays",
-        "title_sub2": "Elite Curved Monitor Series"
+        "title": "Trending Products"
       }
     },
-    "bazaarinic_tabbed_browser": {
-      "type": "bazaarinic-tabbed-collections",
-      "blocks": {
-        "tab_1": {
-          "type": "tab",
-          "settings": {
-            "collection": "all"
-          }
-        }
-      },
-      "block_order": [
-        "tab_1"
-      ],
-      "settings": {
-        "heading": "Browse Innovation",
-        "subheading": "Instantly switch categories to find the correct gear for your tech environment."
-      }
+    "deal_of_day": {
+      "type": "bazaarinic-deal-of-day",
+      "settings": {}
     },
-    "bazaarinic_certification": {
-      "type": "bazaarinic-certification",
-      "blocks": {
-        "b1": {
-          "type": "badge",
-          "settings": {
-            "icon_text": "NETFLIX",
-            "label": "Official Licensing"
-          }
-        },
-        "b2": {
-          "type": "badge",
-          "settings": {
-            "icon_text": "4K UHD",
-            "label": "Resolution Output"
-          }
-        },
-        "b3": {
-          "type": "badge",
-          "settings": {
-            "icon_text": "DOLBY",
-            "label": "Surround Sound"
-          }
-        }
-      },
-      "block_order": [
-        "b1",
-        "b2",
-        "b3"
-      ],
-      "settings": {
-        "tagline": "Official Licensing",
-        "title": "Certified Smart Tech Experience",
-        "description": "Enjoy seamless access to Netflix, Prime Video, and thousands of apps natively, with official Google and Netflix system licensing built right in.",
-        "button_label": "Learn More"
-      }
-    },
-    "bazaarinic_tech_features": {
-      "type": "bazaarinic-tech-features",
-      "blocks": {
-        "f1": {
-          "type": "feature",
-          "settings": {
-            "icon": "🎥",
-            "title": "120-Inch Cinematic Projection",
-            "description": "Fill any wall space with massive, bright displays."
-          }
-        },
-        "f2": {
-          "type": "feature",
-          "settings": {
-            "icon": "🔊",
-            "title": "Dolby Surround Audio",
-            "description": "Crystal clear sound with built-in high fidelity soundstage speakers."
-          }
-        },
-        "f3": {
-          "type": "feature",
-          "settings": {
-            "icon": "💡",
-            "title": "1000 ANSI Lumens",
-            "description": "Optimized projection contrast, brilliant colors during day or night."
-          }
-        }
-      },
-      "block_order": [
-        "f1",
-        "f2",
-        "f3"
-      ],
-      "settings": {
-        "heading": "Unrivaled Hardware Engineering",
-        "subheading": "Explore the next-generation capabilities built inside the Lumex Flix Series.",
-        "columns_desktop": 3
-      }
-    },
-    "bazaarinic_specs_accordion": {
-      "type": "bazaarinic-specs-accordion",
-      "blocks": {
-        "c1": {
-          "type": "category",
-          "settings": {
-            "title": "Optics & Display",
-            "spec_key_1": "Resolution",
-            "spec_val_1": "1080P Native, 4K Decoding",
-            "spec_key_2": "Contrast Ratio",
-            "spec_val_2": "2000:1",
-            "spec_key_3": "ANSI Lumens",
-            "spec_val_3": "1000 ANSI"
-          }
-        },
-        "c2": {
-          "type": "category",
-          "settings": {
-            "title": "Smart OS & Hardware",
-            "spec_key_1": "OS",
-            "spec_val_1": "Official Android TV 11.0",
-            "spec_key_2": "RAM/ROM",
-            "spec_val_2": "2GB DDR4 + 16GB eMMC",
-            "spec_key_3": "Certifications",
-            "spec_val_3": "Netflix, YouTube, Prime Video"
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2"
-      ],
-      "settings": {
-        "heading": "Technical Specifications",
-        "subheading": "Full breakdown of Lumex Flix display, sound, and smart engine parameters."
-      }
+    "brand_carousel": {
+      "type": "bazaarinic-brand-carousel",
+      "settings": {}
     }
   },
   "order": [
-    "bazaarinic_hero",
-    "bazaarinic_promo_grid",
-    "bazaarinic_tabbed_browser",
-    "bazaarinic_certification",
-    "bazaarinic_tech_features",
-    "bazaarinic_specs_accordion"
+    "hero_slider",
+    "service_features",
+    "product_tabs",
+    "deal_of_day",
+    "brand_carousel"
   ]
 }

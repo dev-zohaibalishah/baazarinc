@@ -1,0 +1,103 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-deal-section {
+    padding: 60px 0;
+    background-color: var(--bz-color-topbar);
+  }
+  .bz-deal-container {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+  .bz-deal-content {
+    flex: 1;
+  }
+  .bz-deal-image {
+    flex: 1;
+    text-align: center;
+  }
+  .bz-deal-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .bz-deal-desc {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 16px;
+  }
+  .bz-countdown {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  .bz-time-box {
+    background-color: var(--bz-color-accent);
+    color: white;
+    padding: 15px;
+    border-radius: var(--bz-radius-sm);
+    text-align: center;
+    min-width: 80px;
+  }
+  .bz-time-num {
+    font-size: 24px;
+    font-weight: 700;
+    display: block;
+  }
+  .bz-time-label {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  @media (max-width: 990px) {
+    .bz-deal-container {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="bz-deal-section">
+  <div class="bz-container bz-deal-container">
+    <div class="bz-deal-content">
+      <h2 class="bz-deal-title">Deal of the Day</h2>
+      <p class="bz-deal-desc">Grab the latest smart projector with an exclusive 40% discount. Limited time offer!</p>
+      
+      <div class="bz-countdown">
+        <div class="bz-time-box">
+          <span class="bz-time-num">05</span>
+          <span class="bz-time-label">Days</span>
+        </div>
+        <div class="bz-time-box">
+          <span class="bz-time-num">12</span>
+          <span class="bz-time-label">Hours</span>
+        </div>
+        <div class="bz-time-box">
+          <span class="bz-time-num">45</span>
+          <span class="bz-time-label">Mins</span>
+        </div>
+        <div class="bz-time-box">
+          <span class="bz-time-num">30</span>
+          <span class="bz-time-label">Secs</span>
+        </div>
+      </div>
+      
+      <a href="#" class="bz-btn">Shop Now</a>
+    </div>
+    <div class="bz-deal-image">
+      <img src="https://via.placeholder.com/600x400" alt="Deal of the day" style="max-width: 100%; border-radius: var(--bz-radius-sm);">
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Deal of Day",
+  "presets": [
+    {
+      "name": "Bazaarinic Deal of Day"
+    }
+  ]
+}
+{% endschema %}

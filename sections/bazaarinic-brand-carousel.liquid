@@ -1,0 +1,58 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-brand-section {
+    padding: 60px 0;
+    border-top: 1px solid var(--bz-color-border);
+    border-bottom: 1px solid var(--bz-color-border);
+    margin: 60px 0;
+  }
+  .bz-brand-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 30px;
+    align-items: center;
+    justify-items: center;
+  }
+  .bz-brand-item img {
+    max-width: 100px;
+    opacity: 0.6;
+    transition: var(--bz-transition);
+  }
+  .bz-brand-item img:hover {
+    opacity: 1;
+  }
+  @media (max-width: 990px) {
+    .bz-brand-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 768px) {
+    .bz-brand-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<div class="bz-brand-section">
+  <div class="bz-container">
+    <div class="bz-brand-grid">
+      {% for i in (1..6) %}
+        <div class="bz-brand-item">
+          <img src="https://via.placeholder.com/150x80?text=BRAND+{{ i }}" alt="Brand {{ i }}">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Brands",
+  "presets": [
+    {
+      "name": "Bazaarinic Brand Carousel"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,83 @@
+{{ 'bazaarinic-globals.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .bz-features {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid var(--bz-color-border);
+    padding: 30px;
+    margin: 40px auto;
+    border-radius: var(--bz-radius-sm);
+  }
+  .bz-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .bz-feature-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--bz-color-accent);
+  }
+  .bz-feature-title {
+    font-weight: 700;
+    color: #222;
+    font-size: 16px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+  .bz-feature-desc {
+    font-size: 13px;
+    color: #666;
+  }
+  @media (max-width: 768px) {
+    .bz-features {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+</style>
+
+<div class="bz-container">
+  <div class="bz-features">
+    <div class="bz-feature-item">
+      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+      <div>
+        <div class="bz-feature-title">Free Shipping</div>
+        <div class="bz-feature-desc">On all orders over $99</div>
+      </div>
+    </div>
+    <div class="bz-feature-item">
+      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <div>
+        <div class="bz-feature-title">24/7 Support</div>
+        <div class="bz-feature-desc">Online support 24/7</div>
+      </div>
+    </div>
+    <div class="bz-feature-item">
+      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+      <div>
+        <div class="bz-feature-title">Secure Payment</div>
+        <div class="bz-feature-desc">100% secure payment</div>
+      </div>
+    </div>
+    <div class="bz-feature-item">
+      <svg class="bz-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+      <div>
+        <div class="bz-feature-title">Money Back Guarantee</div>
+        <div class="bz-feature-desc">30 days return window</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bazaarinic Service",
+  "presets": [
+    {
+      "name": "Bazaarinic Service Features"
+    }
+  ]
+}
+{% endschema %}
